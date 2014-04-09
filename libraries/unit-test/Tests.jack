@@ -1,0 +1,72 @@
+/**
+ * You should copy this file and customize it for your own project. It is
+ * expected that this file will contain functions that, when called, will run
+ * all of your tests at once.
+ *
+ * Include the following at the beginning of `Main.main()`:
+ *
+ * `do Tests.runTests();`
+ *
+ * Alternatively, if you want to easily toggle between assertion or visual tests,
+ * use:
+ *
+ * ```
+ * do Tests.runAssertionTests();
+ * do Tests.runVisualTests();
+ * ```
+ *
+ * @author Jackson Ray Hamilton
+ */
+class Tests {
+
+  /**
+   * Runs all of the program's mathematical (instantaneous) tests at once.
+   */
+  function void runAssertionTests() {
+
+    // Example:
+    // do UnitTest.assertIntegerEquals("should be 2", 2, SomeClass.getTwo());
+    // do UnitTest.assertStringEquals("should be 'abc'", "abc", SomeClass.getAlphabet(3));
+
+    // Feel free to remove the following line. It runs tests for the framework itself.
+    do UnitTestTests.runTests();
+
+    return;
+  }
+
+  /**
+   * Waits the standard amount of time for a visual tests' intervals.
+   */
+  function void wait() {
+    do Sys.wait(500);
+    return;
+  }
+
+  /**
+   * Runs all of the program's visual tests at once. These are tests which
+   * have to be examined by the human eye, probably because they involve
+   * drawing. There should be a short interval between visual tests so an
+   * examiner has time to look at the results.
+   *
+   * Yes, unfortunately you must call `wait()` after every test. I wish jack had
+   * lambdas too.
+   */
+  function void runVisualTests() {
+    // Example
+    // do SomeClass.drawSomething();
+    // do Tests.wait():
+    // do SomeClass.drawSomethingElse();
+    // do Tests.wait();
+    return;
+  }
+
+  /**
+   * Runs all tests at once.
+   */
+  function void runTests() {
+    do Tests.runAssertionTests();
+    do Tests.runVisualTests();
+    return;
+  }
+
+}

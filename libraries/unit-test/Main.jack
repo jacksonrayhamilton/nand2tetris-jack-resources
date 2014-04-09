@@ -1,0 +1,12 @@
+class Main {
+
+  /**
+   * Executes main program logic.
+   */
+  function void main() {
+    do Tests.runTests();
+    // Your code.
+    return;
+  }
+
+}

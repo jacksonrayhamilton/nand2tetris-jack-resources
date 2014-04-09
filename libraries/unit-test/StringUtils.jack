@@ -1,0 +1,35 @@
+/**
+ * Various utility methods for working with strings.
+ *
+ * @author Jackson Ray Hamilton
+ */
+class StringUtils {
+
+  /**
+   * @return Whether or not a and b are the same string.
+   */
+  function boolean equals(String a, String b) {
+    var int aLength, bLength;
+    var int i;
+
+    let aLength = a.length();
+    let bLength = b.length();
+
+    // Do the lengths match?
+    if (~(aLength = bLength)) {
+      return false;
+    }
+
+    // Are all the chars the same?
+    let i = 0;
+    while (i < aLength) {
+      if (~(a.charAt(i) = b.charAt(i))) {
+        return false;
+      }
+      let i = i + 1;
+    }
+
+    return true;
+  }
+
+}

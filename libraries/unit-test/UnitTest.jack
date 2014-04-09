@@ -1,0 +1,109 @@
+/**
+ * Runs formal tests to ensure long-term program stability.  Contains functions
+ * which should be used by a `Tests` class to assert certain outcomes.
+ *
+ * @author Jackson Ray Hamilton
+ */
+class UnitTest {
+
+  /**
+   * Helper function for all flavors of `failX()`.
+   */
+  function void _failStart() {
+    do Output.moveCursor(0, 0);
+    do Output.printString("Tests failed!");
+    do Output.println();
+    return;
+  }
+
+  /**
+   * Helper function for all flavors of `failX()`.
+   */
+  function void _failEnd() {
+    do Sys.halt();
+    return;
+  }
+
+  /**
+   * Describes the reason for test failure involving integers.
+   * Helper method for `UnitTest.assertInteger()`.
+   */
+  function void failInteger(String description, int expected, int result) {
+    do UnitTest._failStart();
+    do Output.printString(description);
+    do Output.println();
+    do Output.printString("Expected: ");
+    do Output.printInt(expected);
+    do Output.printString(" Result: ");
+    do Output.printInt(result);
+    do Output.println();
+    do UnitTest._failEnd();
+    return;
+  }
+
+  /**
+   * Describes the reason for test failure involving strings.
+   * Helper method for `UnitTest.assertString()`.
+   */
+  function void failString(String description, String expected, String result) {
+    do UnitTest._failStart();
+    do Output.printString(description);
+    do Output.println();
+    do Output.printString("Expected: ");
+    do Output.printString(expected);
+    do Output.printString(" Result: ");
+    do Output.printString(result);
+    do Output.println();
+    do UnitTest._failEnd();
+    return;
+  }
+
+  /**
+   * Helper method for `assertIntegerEquals()`.
+   */
+  function boolean integerEquals(int expected, int result) {
+    return (expected = result);
+  }
+
+  /**
+   * Helper method for `assertStringEquals()`.
+   */
+  function boolean stringEquals(String expected, String result) {
+    return StringUtils.equals(expected, result);
+  }
+
+  /**
+   * Calling `UnitTest.assertXEquals()` allows you to check whether a method/function is
+   * returning what it is supposed to return.
+   *
+   * Example usage:
+   *
+   * ```
+   * UnitTest.assertIntegerEquals(
+   *   "Ensure that 2 is the min of {2, 3}.", 2, Math.min(2, 3)
+   * );
+   * ```
+   *
+   * @param description A brief explanation of what is being tested.
+   * @param expected The expected (correct) outcome of the method/function.
+   * @param result The return value of the method/function goes here.
+   * @return true if the test succeeds, program halts otherwise.
+   */
+  function boolean assertIntegerEquals(String description, int expected, int result) {
+    if (~UnitTest.integerEquals(expected, result)) {
+      do UnitTest.failInteger(description, expected, result);
+    }
+    return true;
+  }
+
+  /**
+   * See `assertIntegerEquals()`.
+   */
+  function boolean assertStringEquals(String description, String expected, String result) {
+    if (~UnitTest.stringEquals(expected, result)) {
+      do UnitTest.failString(description, expected, result);
+    }
+    return true;
+  }
+
+}

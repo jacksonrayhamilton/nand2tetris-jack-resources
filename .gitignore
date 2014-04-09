@@ -1,0 +1,6 @@
+# Ignore binaries.
+*.vm
+
+# Ignore fragments.
+*~
+\#*\#
