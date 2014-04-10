@@ -9,7 +9,7 @@ Features
 - Unit testing framework "UnitTest".
     - Provides assertion functions for primitives and objects.
     - Provides detailed feedback for failing tests.
-- Strings library "Strings".
+- String utility library aptly-dubbed "Strings".
     - `equals()`
     - `repeat()`
     - `join()`, `concat()`

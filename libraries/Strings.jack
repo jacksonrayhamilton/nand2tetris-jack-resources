@@ -71,7 +71,6 @@ class Strings {
     return ret;
   }
 
-
   /**
    * Concatenates an array of strings into a single string, joined by a
    * substring.
@@ -194,6 +193,7 @@ class Strings {
     }
 
     // Cap the end index at 1 past the end of the string.
+    // TODO: Consider whether this is needed or not.
     let endIndex = Math.min(stringLength, endIndex);
 
     let size = endIndex - beginIndex;
@@ -249,21 +249,6 @@ class Strings {
    * @return The format string interpolated with the given values.
    */
   function String sprintf(String format, Array values) {
-    // i = 0
-    // index = 0
-    // beginIndex = index
-    // index = indexOf "%" 0
-    // while ~(index = -1)
-    //   appendToBuffer substring beginIndex, index
-    //   beginIndex = index + 2
-    //   charAt index
-    //   if 's', etc
-    //     appendToBuffer coerceInt arr[i]
-    //     i = i + 1
-    //   endif
-    //   index = indexOf "%" beginIndex
-    // appendToBuffer substring beginIndex, format.length
-
     var int index, beginIndex, tagCount, substringsLength, i, substringsIndex;
     var Array substrings;
     var char specifier;
@@ -318,7 +303,8 @@ class Strings {
         let substringsIndex = substringsIndex + 1;
         let i = i + 1;
       } else {
-        let substrings[substringsIndex] = Strings.substring(format, beginIndex, format.length());
+        let substrings[substringsIndex] = Strings.substring(format, beginIndex,
+                                                            format.length());
       }
     }
 
