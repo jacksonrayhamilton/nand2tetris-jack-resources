@@ -1,3 +1,10 @@
+/**
+ * Main.main should contain `do Tests.runTests();`. It can be commented-out for
+ * production, but should be at the top of main while you are testing so as to
+ * catch bugs in your program as they are introduced.
+ *
+ * @author Jackson Ray Hamilton
+ */
 class Main {
 
   /**
