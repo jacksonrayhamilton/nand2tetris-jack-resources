@@ -11,7 +11,7 @@ Features
     - Provides detailed feedback for failing tests.
 - Strings library "Strings".
     - `equals()`
-    - `reqeat()`
+    - `repeat()`
     - `join()`
     - `concat()`
     - `coerceInt()`, `coerceChar()`, `coerceBoolean()`
