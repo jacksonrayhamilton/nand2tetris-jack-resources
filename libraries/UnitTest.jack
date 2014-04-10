@@ -71,7 +71,7 @@ class UnitTest {
   function void assertIntegerEquals(String description, int expected, int result) {
     if (~(expected = result)) {
       do UnitTest.fail(description,
-                       "Integers not same value.",
+                       "Incorrect integer value.",
                        null, Strings.coerceInt(expected),
                        null, Strings.coerceInt(result));
     }
@@ -110,6 +110,7 @@ class UnitTest {
   function void assertStringLengthEquals(String description, String expected,
                                          String result) {
     var int expectedLength, resultLength;
+    var Array args;
 
     let expectedLength = expected.length();
     let resultLength = result.length();
@@ -118,13 +119,16 @@ class UnitTest {
       return;
     }
 
+    let args = Array.new(2);
+    let args[0] = expected;
+    let args[1] = result;
     do UnitTest.fail(description,
-                     Strings.concat(Strings.concat(Strings.concat(Strings.concat("Strings `", expected),
-                                                                  "' and `"),
-                                                   result),
-                                    "' lengths unequal."),
+                     Strings.sprintf(
+                       "Length of result string `%s' unequal to length of expected string `%s'.",
+                       args),
                      "Expected length", Strings.coerceInt(expectedLength),
                      "Result length", Strings.coerceInt(resultLength));
+    do args.dispose();
 
     return;
   }
@@ -136,7 +140,8 @@ class UnitTest {
                                         String result) {
     var int i, length;
     var char expectedChar, resultChar;
-    var String reason, arrow, resultAndArrow;
+    var Array args;
+    var String reason;
 
     let i = 0;
     let length = expected.length();
@@ -144,16 +149,24 @@ class UnitTest {
       let expectedChar = expected.charAt(i);
       let resultChar = result.charAt(i);
       if (~(expectedChar = resultChar)) {
-        let reason = Strings.concat(Strings.concat(Strings.concat("Chars not same at index `",
-                                                                      Strings.coerceInt(i)),
-                                                       "'."),
-                                     Strings.coerceChar(String.newLine()));
-        let arrow = Strings.concat(Strings.repeat(" ", i), "^");
-        let resultAndArrow = Strings.concat(Strings.concat(result,
-                                                          Strings.coerceChar(String.newLine())),
-                                           arrow);
+        let args = Array.new(2);
+
+        let args[0] = i;
+        let args[1] = String.newLine();
+        let reason = Strings.sprintf("Chars not same at index `%i'.%c", args);
+
+        let args[0] = result;
+        let args[1] = String.newLine();
+        let reason = Strings.concat(reason, Strings.sprintf("%s%c", args));
+
+        let args[0] = Strings.repeat(" ", i);
+        let args[1] = "^";
+        let reason = Strings.concat(reason, Strings.sprintf("%s%s", args));
+
+        do args.dispose();
+
         do UnitTest.fail(description,
-                         Strings.concat(reason, resultAndArrow),
+                         reason,
                          "Expected char", Strings.coerceChar(expectedChar),
                          "Result char", Strings.coerceChar(resultChar));
       }
@@ -166,7 +179,8 @@ class UnitTest {
   /**
    * Fails if a string is not the same.
    */
-  function void assertStringEquals(String description, String expected, String result) {
+  function void assertStringEquals(String description, String expected,
+                                   String result) {
     do UnitTest.assertStringLengthEquals(description, expected, result);
     do UnitTest.assertStringCharsEquals(description, expected, result);
     return;
