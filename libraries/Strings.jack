@@ -184,15 +184,17 @@ class Strings {
    */
   function String substring(String string, int beginIndex, int endIndex) {
     var String buffer;
-    var int size, index;
+    var int stringLength, size, index;
 
-    // Solve a lot of headaches.
-    if (endIndex = beginIndex) {
-      let endIndex = endIndex + 1;
+    let stringLength = string.length();
+
+    // Handle the case of the begin index being out of bounds.
+    if (~(beginIndex < stringLength)) {
+      return "";
     }
 
     // Cap the end index at 1 past the end of the string.
-    let endIndex = Math.min(string.length(), endIndex);
+    let endIndex = Math.min(stringLength, endIndex);
 
     let size = endIndex - beginIndex;
     let buffer = String.new(size);
@@ -209,14 +211,15 @@ class Strings {
   /**
    * Searches a string for a substring.
    *
+   * @param beginIndex Usually `0`.
    * @return The index of the first occurrence of a substring in a string, or -1
    * if not found.
    */
-  function int indexOf(String string, String substring) {
+  function int indexOf(String string, String substring, int beginIndex) {
     var int index, endIndex, stringLength, substringLength;
     var String toCheck;
 
-    let index = 0;
+    let index = beginIndex;
     let stringLength = string.length();
     let substringLength = substring.length();
     while (index < stringLength) {
@@ -234,12 +237,96 @@ class Strings {
   }
 
   /**
+   * Gets the first char from a string.
+   */
+  function char parseChar(String string) {
+    return string.charAt(0);
+  }
+
+  /**
    * Interpolates values into a string. Similar to C's sprintf.
    *
    * @return The format string interpolated with the given values.
    */
   function String sprintf(String format, Array values) {
-    return "";
+    // i = 0
+    // index = 0
+    // beginIndex = index
+    // index = indexOf "%" 0
+    // while ~(index = -1)
+    //   appendToBuffer substring beginIndex, index
+    //   beginIndex = index + 2
+    //   charAt index
+    //   if 's', etc
+    //     appendToBuffer coerceInt arr[i]
+    //     i = i + 1
+    //   endif
+    //   index = indexOf "%" beginIndex
+    // appendToBuffer substring beginIndex, format.length
+
+    var int index, beginIndex, tagCount, substringsLength, i, substringsIndex;
+    var Array substrings;
+    var char specifier;
+    var String ret;
+
+    let index = 0;
+    let beginIndex = index;
+
+    // Count how many tags there are so an array of the correct size
+    // can be made.
+    let tagCount = 0;
+    while (~(index = -1)) {
+      let index = Strings.indexOf(format, "%", beginIndex);
+      if (index > -1) {
+        let tagCount = tagCount + 1;
+        let beginIndex = index + 2;
+      }
+    }
+
+    let substringsLength = 1 + (tagCount * 2);
+    let substrings = Array.new(substringsLength);
+
+    let i = 0;
+    let substringsIndex = 0;
+    let index = 0;
+    let beginIndex = index;
+
+    while (~(index = -1)) {
+      let index = Strings.indexOf(format, "%", beginIndex);
+      if (index > -1) {
+        // Get the substring before the tag.
+        let substrings[substringsIndex] = Strings.substring(format, beginIndex, index);
+        let substringsIndex = substringsIndex + 1;
+
+        // Update beginIndex to point past the tag.
+        let beginIndex = index + 2;
+
+        // Determine the next appropriate action based on a specifier.
+        // e.g., "%i", "%s", "%c", etc.
+        let specifier = format.charAt(index + 1);
+        if ((specifier = 105) | (specifier = 100)) { // i || d
+          let substrings[substringsIndex] = Strings.coerceInt(values[i]);
+        } else {
+          if (specifier = 115) { // s
+            let substrings[substringsIndex] = values[i];
+          } else {
+            if (specifier = 99) { // c
+              let substrings[substringsIndex] = Strings.coerceChar(values[i]);
+            }
+          }
+        }
+        let substringsIndex = substringsIndex + 1;
+        let i = i + 1;
+      } else {
+        let substrings[substringsIndex] = Strings.substring(format, beginIndex, format.length());
+      }
+    }
+
+    // Finally join all the formatted bits together.
+    let ret = Strings.join(substrings, substringsLength, "");
+    do substrings.dispose();
+
+    return ret;
   }
 
 }

@@ -78,7 +78,7 @@ class StringsTests {
     let testStringLength = testString.length();
 
     do UnitTest.assertStringEquals("substring", "a", Strings.substring(testString, 0, 1));
-    do UnitTest.assertStringEquals("substring", "a", Strings.substring(testString, 0, 0));
+    do UnitTest.assertStringEquals("substring", "", Strings.substring(testString, 0, 0));
     do UnitTest.assertStringEquals("substring", "ab", Strings.substring(testString, 0, 2));
     do UnitTest.assertStringEquals("substring", "abcdefg", Strings.substring(testString, 0, testStringLength));
     do UnitTest.assertStringEquals("substring", "efg", Strings.substring(testString, 4, testStringLength));
@@ -91,11 +91,27 @@ class StringsTests {
 
     let testString = "abcdefg";
 
-    do UnitTest.assertIntegerEquals("indexOf", 0, Strings.indexOf(testString, "a"));
-    do UnitTest.assertIntegerEquals("indexOf", 1, Strings.indexOf(testString, "b"));
-    do UnitTest.assertIntegerEquals("indexOf", 0, Strings.indexOf(testString, "ab"));
-    do UnitTest.assertIntegerEquals("indexOf", 1, Strings.indexOf(testString, "bc"));
-    do UnitTest.assertIntegerEquals("indexOf", -1, Strings.indexOf(testString, "hijkl"));
+    do UnitTest.assertIntegerEquals("indexOf", 0, Strings.indexOf(testString, "a", 0));
+    do UnitTest.assertIntegerEquals("indexOf", 1, Strings.indexOf(testString, "b", 0));
+    do UnitTest.assertIntegerEquals("indexOf", 0, Strings.indexOf(testString, "ab", 0));
+    do UnitTest.assertIntegerEquals("indexOf", 1, Strings.indexOf(testString, "bc", 0));
+    do UnitTest.assertIntegerEquals("indexOf", -1, Strings.indexOf(testString, "hijkl", 0));
+    do UnitTest.assertIntegerEquals("indexOf", -1, Strings.indexOf(testString, "a", 1));
+
+    return;
+  }
+
+  function void sprintf_NoTags_SameString() {
+    var Array arr;
+
+    let arr = Array.new(1);
+    let arr[0] = "";
+
+    do UnitTest.assertStringEquals("no tags; interpolate nothing",
+                                   "yo yo yo",
+                                   Strings.sprintf("yo yo yo", arr));
+
+    do arr.dispose();
 
     return;
   }
@@ -109,7 +125,29 @@ class StringsTests {
 
     do UnitTest.assertStringEquals("interpolate values",
                                    "the quick fox jumps over 10 dogs",
-                                   Strings.sprintf("the %s fox jumps over %d dogs", arr));
+                                   Strings.sprintf("the %s fox jumps over %i dogs", arr));
+
+    do arr.dispose();
+
+    let arr = Array.new(1);
+    let arr[0] = -517;
+
+    do UnitTest.assertStringEquals("interpolate values",
+                                   "I am -517 years old!! What",
+                                   Strings.sprintf("I am %i years old!! What", arr));
+
+    do arr.dispose();
+
+    let arr = Array.new(5);
+    let arr[0] = Strings.parseChar("!");
+    let arr[1] = "Bob";
+    let arr[2] = 1;
+    let arr[3] = Strings.parseChar("?");
+    let arr[4] = "";
+
+    do UnitTest.assertStringEquals("interpolate values",
+                                   "OMG! Bob is 1 weird guy, isn't he?",
+                                   Strings.sprintf("OMG%c %s is %d weird guy, isn't he%c%s", arr));
 
     do arr.dispose();
 
@@ -125,7 +163,8 @@ class StringsTests {
     do StringsTests.join_VariousLengths_CorrectlyJoined();
     do StringsTests.substring_DifferingRanges_CorrectSubstring();
     do StringsTests.indexOf_DifferingSubstringSizes_CorrectIndex();
-    //do StringsTests.sprintf_NumerousTypes_CorrectInterpolation();
+    do StringsTests.sprintf_NoTags_SameString();
+    do StringsTests.sprintf_NumerousTypes_CorrectInterpolation();
     return;
   }
 

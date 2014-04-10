@@ -12,9 +12,10 @@ Features
 - Strings library "Strings".
     - `equals()`
     - `repeat()`
-    - `join()`
-    - `concat()`
-    - `coerceInt()`, `coerceChar()`, `coerceBoolean()`
+    - `join()`, `concat()`
+    - `coerceInt()`, `coerceChar()`, `coerceBoolean()`, `parseChar()`
+    - `substring()`, `indexOf()`
+    - `sprintf()`
 - Text-editor language support.
     - Emacs
         - Syntax highlighting including OS classes.
