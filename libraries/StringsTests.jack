@@ -70,6 +70,52 @@ class StringsTests {
     return;
   }
 
+  function void substring_DifferingRanges_CorrectSubstring() {
+    var String testString;
+    var int testStringLength;
+
+    let testString = "abcdefg";
+    let testStringLength = testString.length();
+
+    do UnitTest.assertStringEquals("substring", "a", Strings.substring(testString, 0, 1));
+    do UnitTest.assertStringEquals("substring", "a", Strings.substring(testString, 0, 0));
+    do UnitTest.assertStringEquals("substring", "ab", Strings.substring(testString, 0, 2));
+    do UnitTest.assertStringEquals("substring", "abcdefg", Strings.substring(testString, 0, testStringLength));
+    do UnitTest.assertStringEquals("substring", "efg", Strings.substring(testString, 4, testStringLength));
+
+    return;
+  }
+
+  function void indexOf_DifferingSubstringSizes_CorrectIndex() {
+    var String testString;
+
+    let testString = "abcdefg";
+
+    do UnitTest.assertIntegerEquals("indexOf", 0, Strings.indexOf(testString, "a"));
+    do UnitTest.assertIntegerEquals("indexOf", 1, Strings.indexOf(testString, "b"));
+    do UnitTest.assertIntegerEquals("indexOf", 0, Strings.indexOf(testString, "ab"));
+    do UnitTest.assertIntegerEquals("indexOf", 1, Strings.indexOf(testString, "bc"));
+    do UnitTest.assertIntegerEquals("indexOf", -1, Strings.indexOf(testString, "hijkl"));
+
+    return;
+  }
+
+  function void sprintf_NumerousTypes_CorrectInterpolation() {
+    var Array arr;
+
+    let arr = Array.new(2);
+    let arr[0] = "quick";
+    let arr[1] = 10;
+
+    do UnitTest.assertStringEquals("interpolate values",
+                                   "the quick fox jumps over 10 dogs",
+                                   Strings.sprintf("the %s fox jumps over %d dogs", arr));
+
+    do arr.dispose();
+
+    return;
+  }
+
   function void runTests() {
     do StringsTests.equals_SameString_True();
     do StringsTests.equals_DifferentStrings_False();
@@ -77,6 +123,9 @@ class StringsTests {
     do StringsTests.coerceChar_DifferentChars_CorrectRepresentation();
     do StringsTests.concat_DifferingLengths_CorrectlyConcatenated();
     do StringsTests.join_VariousLengths_CorrectlyJoined();
+    do StringsTests.substring_DifferingRanges_CorrectSubstring();
+    do StringsTests.indexOf_DifferingSubstringSizes_CorrectIndex();
+    //do StringsTests.sprintf_NumerousTypes_CorrectInterpolation();
     return;
   }
 

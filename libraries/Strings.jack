@@ -174,4 +174,72 @@ class Strings {
     }
   }
 
+  /**
+   * Gets a section of a string.
+   *
+   * @param string String to get a section of.
+   * @param beginIndex Starting index inclusive.
+   * @param endIndex Ending index exclusive.
+   * @return The section of the string from beginIndex to endIndex.
+   */
+  function String substring(String string, int beginIndex, int endIndex) {
+    var String buffer;
+    var int size, index;
+
+    // Solve a lot of headaches.
+    if (endIndex = beginIndex) {
+      let endIndex = endIndex + 1;
+    }
+
+    // Cap the end index at 1 past the end of the string.
+    let endIndex = Math.min(string.length(), endIndex);
+
+    let size = endIndex - beginIndex;
+    let buffer = String.new(size);
+
+    let index = beginIndex;
+    while (index < endIndex) {
+      do buffer.appendChar(string.charAt(index));
+      let index = index + 1;
+    }
+
+    return buffer;
+  }
+
+  /**
+   * Searches a string for a substring.
+   *
+   * @return The index of the first occurrence of a substring in a string, or -1
+   * if not found.
+   */
+  function int indexOf(String string, String substring) {
+    var int index, endIndex, stringLength, substringLength;
+    var String toCheck;
+
+    let index = 0;
+    let stringLength = string.length();
+    let substringLength = substring.length();
+    while (index < stringLength) {
+      let endIndex = index + substringLength;
+      let toCheck = Strings.substring(string, index, endIndex);
+      if (Strings.equals(substring, toCheck)) {
+        do toCheck.dispose();
+        return index;
+      }
+      do toCheck.dispose();
+      let index = index + 1;
+    }
+
+    return -1;
+  }
+
+  /**
+   * Interpolates values into a string. Similar to C's sprintf.
+   *
+   * @return The format string interpolated with the given values.
+   */
+  function String sprintf(String format, Array values) {
+    return "";
+  }
+
 }
