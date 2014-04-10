@@ -174,7 +174,7 @@ class Strings {
   }
 
   /**
-   * Gets a section of a string.
+   * Gets a section of a string. Works like JavaScript's `substring()`.
    *
    * @param string String to get a section of.
    * @param beginIndex Starting index inclusive.
@@ -183,18 +183,27 @@ class Strings {
    */
   function String substring(String string, int beginIndex, int endIndex) {
     var String buffer;
-    var int stringLength, size, index;
+    var int stringLength, temp, size, index;
 
     let stringLength = string.length();
 
-    // Handle the case of the begin index being out of bounds.
-    if (~(beginIndex < stringLength)) {
+    // Keep the indices in-bounds.
+    let beginIndex = Math.max(0, beginIndex);
+    let beginIndex = Math.min(stringLength, beginIndex);
+    let endIndex = Math.max(0, endIndex);
+    let endIndex = Math.min(stringLength, endIndex);
+
+    // Handle the case of no range.
+    if (beginIndex = endIndex) {
       return "";
     }
 
-    // Cap the end index at 1 past the end of the string.
-    // TODO: Consider whether this is needed or not.
-    let endIndex = Math.min(stringLength, endIndex);
+    // Swap indices if the arguments produce a negative range.
+    if (beginIndex > endIndex) {
+      let temp = beginIndex;
+      let beginIndex = endIndex;
+      let endIndex = temp;
+    }
 
     let size = endIndex - beginIndex;
     let buffer = String.new(size);
@@ -244,7 +253,7 @@ class Strings {
   }
 
   /**
-   * Interpolates values into a string. Similar to C's sprintf.
+   * Interpolates values into a string. Similar to C's `sprintf()`.
    *
    * Currently only supports "%i", "%d", "%s" and "%c", and no flags.
    *

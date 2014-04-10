@@ -77,11 +77,33 @@ class StringsTests {
     let testString = "abcdefg";
     let testStringLength = testString.length();
 
-    do UnitTest.assertStringEquals("substring", "a", Strings.substring(testString, 0, 1));
-    do UnitTest.assertStringEquals("substring", "", Strings.substring(testString, 0, 0));
-    do UnitTest.assertStringEquals("substring", "ab", Strings.substring(testString, 0, 2));
-    do UnitTest.assertStringEquals("substring", "abcdefg", Strings.substring(testString, 0, testStringLength));
-    do UnitTest.assertStringEquals("substring", "efg", Strings.substring(testString, 4, testStringLength));
+    do UnitTest.assertStringEquals("substring", "a",
+                                   Strings.substring(testString, 0, 1));
+    do UnitTest.assertStringEquals("substring", "",
+                                   Strings.substring(testString, 0, 0));
+    do UnitTest.assertStringEquals("substring", "ab",
+                                   Strings.substring(testString, 0, 2));
+    do UnitTest.assertStringEquals("substring", "abcdefg",
+                                   Strings.substring(testString, 0,
+                                                     testStringLength));
+    do UnitTest.assertStringEquals("substring", "efg",
+                                   Strings.substring(testString, 4,
+                                                     testStringLength));
+
+    do UnitTest.assertStringEquals("substring reverse indices", "a",
+                                   Strings.substring(testString, 1, 0));
+    do UnitTest.assertStringEquals("substring out of bounds", "a",
+                                   Strings.substring(testString, -1, 1));
+    do UnitTest.assertStringEquals("substring out of bounds", "abcdefg",
+                                   Strings.substring(testString, 0,
+                                                     testStringLength + 1));
+    do UnitTest.assertStringEquals("substring out of bounds", "abcdefg",
+                                   Strings.substring(testString, -1,
+                                                     testStringLength + 1));
+    do UnitTest.assertStringEquals("substring reverse indices out of bounds",
+                                   "abcdefg",
+                                   Strings.substring(testString,
+                                                     testStringLength + 1, -1));
 
     return;
   }
@@ -116,38 +138,137 @@ class StringsTests {
     return;
   }
 
+  function void sprintf_DifferentIndices_CorrectInterpolation() {
+    var Array arr;
+
+    let arr = Array.new(3);
+    let arr[0] = "a";
+    let arr[1] = "b";
+    let arr[2] = "c";
+
+    do UnitTest.assertStringEquals("interpolate",
+                                   "a",
+                                   Strings.sprintf("%s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "a ",
+                                   Strings.sprintf("%s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " a",
+                                   Strings.sprintf(" %s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "ab",
+                                   Strings.sprintf("%s%s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "ab ",
+                                   Strings.sprintf("%s%s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " ab",
+                                   Strings.sprintf(" %s%s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " ab ",
+                                   Strings.sprintf(" %s%s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "a b",
+                                   Strings.sprintf("%s %s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "a b ",
+                                   Strings.sprintf("%s %s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " a b",
+                                   Strings.sprintf(" %s %s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " a b ",
+                                   Strings.sprintf(" %s %s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "a b c",
+                                   Strings.sprintf("%s %s %s", arr));
+
+    let arr[0] = "ab";
+    let arr[1] = "cd";
+    let arr[2] = "ef";
+
+    do UnitTest.assertStringEquals("interpolate",
+                                   "ab",
+                                   Strings.sprintf("%s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "ab ",
+                                   Strings.sprintf("%s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " ab",
+                                   Strings.sprintf(" %s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "abcd",
+                                   Strings.sprintf("%s%s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "abcd ",
+                                   Strings.sprintf("%s%s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " abcd",
+                                   Strings.sprintf(" %s%s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " abcd ",
+                                   Strings.sprintf(" %s%s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "ab cd",
+                                   Strings.sprintf("%s %s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "ab cd ",
+                                   Strings.sprintf("%s %s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " ab cd",
+                                   Strings.sprintf(" %s %s", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   " ab cd ",
+                                   Strings.sprintf(" %s %s ", arr));
+    do UnitTest.assertStringEquals("interpolate",
+                                   "ab cd ef",
+                                   Strings.sprintf("%s %s %s", arr));
+
+    do arr.dispose();
+
+    return;
+  }
+
   function void sprintf_NumerousTypes_CorrectInterpolation() {
     var Array arr;
 
-    let arr = Array.new(2);
-    let arr[0] = "quick";
+    let arr = Array.new(3);
+    let arr[0] = "a";
     let arr[1] = 10;
 
     do UnitTest.assertStringEquals("interpolate values",
-                                   "the quick fox jumps over 10 dogs",
-                                   Strings.sprintf("the %s fox jumps over %i dogs", arr));
+                                   "a10",
+                                   Strings.sprintf("%s%i", arr));
 
-    do arr.dispose();
-
-    let arr = Array.new(1);
-    let arr[0] = -517;
+    let arr[0] = 10;
+    let arr[1] = "a";
 
     do UnitTest.assertStringEquals("interpolate values",
-                                   "I am -517 years old!! What",
-                                   Strings.sprintf("I am %i years old!! What", arr));
+                                   "10a",
+                                   Strings.sprintf("%d%s", arr));
 
-    do arr.dispose();
-
-    let arr = Array.new(5);
-    let arr[0] = Strings.parseChar("!");
-    let arr[1] = "Bob";
-    let arr[2] = 1;
-    let arr[3] = Strings.parseChar("?");
-    let arr[4] = "";
+    let arr[0] = -20;
+    let arr[1] = 20;
 
     do UnitTest.assertStringEquals("interpolate values",
-                                   "OMG! Bob is 1 weird guy, isn't he?",
-                                   Strings.sprintf("OMG%c %s is %d weird guy, isn't he%c%s", arr));
+                                   "-2020",
+                                   Strings.sprintf("%i%i", arr));
+
+    let arr[0] = "";
+    let arr[1] = Strings.parseChar("!");
+    let arr[2] = Strings.parseChar("!");
+
+    do UnitTest.assertStringEquals("interpolate values",
+                                   "33!",
+                                   Strings.sprintf("%s%i%c", arr));
+
+    let arr[0] = "quick";
+    let arr[1] = 42;
+    let arr[2] = Strings.parseChar(".");
+
+    do UnitTest.assertStringEquals("interpolate values",
+                                   "A quick fox jumps over 42 dogs.",
+                                   Strings.sprintf("A %s fox jumps over %i dogs%c", arr));
 
     do arr.dispose();
 
@@ -164,6 +285,7 @@ class StringsTests {
     do StringsTests.substring_DifferingRanges_CorrectSubstring();
     do StringsTests.indexOf_DifferingSubstringSizes_CorrectIndex();
     do StringsTests.sprintf_NoTags_SameString();
+    do StringsTests.sprintf_DifferentIndices_CorrectInterpolation();
     do StringsTests.sprintf_NumerousTypes_CorrectInterpolation();
     return;
   }
