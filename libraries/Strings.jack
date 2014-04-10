@@ -246,6 +246,12 @@ class Strings {
   /**
    * Interpolates values into a string. Similar to C's sprintf.
    *
+   * Currently only supports "%i", "%d", "%s" and "%c", and no flags.
+   *
+   * @param format A string, potentially one containing "tag" substrings
+   * of the form "%X".
+   * @param values Array containing values of [potentially] many datatypes.
+   * These values will replace the format tags in-order.
    * @return The format string interpolated with the given values.
    */
   function String sprintf(String format, Array values) {
@@ -280,7 +286,8 @@ class Strings {
       let index = Strings.indexOf(format, "%", beginIndex);
       if (index > -1) {
         // Get the substring before the tag.
-        let substrings[substringsIndex] = Strings.substring(format, beginIndex, index);
+        let substrings[substringsIndex] = Strings.substring(format, beginIndex,
+                                                            index);
         let substringsIndex = substringsIndex + 1;
 
         // Update beginIndex to point past the tag.
