@@ -1,0 +1,78 @@
+class StringsTests {
+
+  function void equals_SameString_True() {
+    do UnitTest.assertTrue("same strings", Strings.equals("abc", "abc"));
+    do UnitTest.assertTrue("same strings", Strings.equals("defghi", "defghi"));
+    return;
+  }
+
+  function void equals_DifferentStrings_False() {
+    do UnitTest.assertFalse("different strings", Strings.equals("abc", "def"));
+    do UnitTest.assertFalse("different strings", Strings.equals("defghi", "abcdef"));
+    return;
+  }
+
+  function void coerceInt_DifferingSizes_CorrectStringSize() {
+    do UnitTest.assertStringEquals("coerce int to string", "0", Strings.coerceInt(0));
+    do UnitTest.assertStringEquals("coerce int to string", "1", Strings.coerceInt(1));
+    do UnitTest.assertStringEquals("coerce int to string", "10", Strings.coerceInt(10));
+    do UnitTest.assertStringEquals("coerce int to string", "100", Strings.coerceInt(100));
+    do UnitTest.assertStringEquals("coerce int to string", "-1", Strings.coerceInt(-1));
+    do UnitTest.assertStringEquals("coerce int to string", "-10", Strings.coerceInt(-10));
+    do UnitTest.assertStringEquals("coerce int to string", "-100", Strings.coerceInt(-100));
+    return;
+  }
+
+  function void coerceChar_DifferentChars_CorrectRepresentation() {
+    do UnitTest.assertStringEquals("coerce char to string", "!", Strings.coerceChar(33));
+    do UnitTest.assertStringEquals("coerce char to string",
+                                   Strings.coerceChar(String.doubleQuote()),
+                                   Strings.coerceChar(34));
+    do UnitTest.assertStringEquals("coerce char to string", "A", Strings.coerceChar(65));
+    return;
+  }
+
+  function void concat_DifferingLengths_CorrectlyConcatenated() {
+    do UnitTest.assertStringEquals("concat strings", "seashells", Strings.concat("sea", "shells"));
+    do UnitTest.assertStringEquals("concat to one empty string", "b", Strings.concat("", "b"));
+    do UnitTest.assertStringEquals("concat to one empty string", "a", Strings.concat("a", ""));
+    do UnitTest.assertStringEquals("concat empty strings", "", Strings.concat("", ""));
+    return;
+  }
+
+  function void join_VariousLengths_CorrectlyJoined() {
+    var Array arr;
+
+    let arr = Array.new(5);
+    let arr[0] = "uno";
+    let arr[1] = "dos";
+    let arr[2] = "tres";
+    let arr[3] = "cuatro";
+    let arr[4] = "cinco";
+
+    do UnitTest.assertStringEquals("join strings", "uno, dos, tres, cuatro, cinco", Strings.join(arr, 5, ", "));
+    do UnitTest.assertStringEquals("join strings", "unodostrescuatrocinco", Strings.join(arr, 5, ""));
+
+    do arr.dispose();
+
+    let arr = Array.new(1);
+    let arr[0] = "I am the one who knocks.";
+
+    do UnitTest.assertStringEquals("join single string", "I am the one who knocks.", Strings.join(arr, 1, "asdf"));
+
+    do arr.dispose();
+
+    return;
+  }
+
+  function void runTests() {
+    do StringsTests.equals_SameString_True();
+    do StringsTests.equals_DifferentStrings_False();
+    do StringsTests.coerceInt_DifferingSizes_CorrectStringSize();
+    do StringsTests.coerceChar_DifferentChars_CorrectRepresentation();
+    do StringsTests.concat_DifferingLengths_CorrectlyConcatenated();
+    do StringsTests.join_VariousLengths_CorrectlyJoined();
+    return;
+  }
+
+}

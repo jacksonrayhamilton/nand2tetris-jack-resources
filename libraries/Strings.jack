@@ -1,0 +1,177 @@
+/**
+ * Various utility methods for working with strings.
+ *
+ * @author Jackson Ray Hamilton
+ */
+class Strings {
+
+  /**
+   * @return Whether or not `a` and `b` are the same string.
+   */
+  function boolean equals(String a, String b) {
+    var int aLength, bLength;
+    var int i;
+
+    let aLength = a.length();
+    let bLength = b.length();
+
+    // Do the lengths match?
+    if (~(aLength = bLength)) {
+      return false;
+    }
+
+    // Are all the chars the same?
+    let i = 0;
+    while (i < aLength) {
+      if (~(a.charAt(i) = b.charAt(i))) {
+        return false;
+      }
+      let i = i + 1;
+    }
+
+    return true;
+  }
+
+  /**
+   * Mutates a string buffer by adding a sequence of characters to it.
+   */
+  function void appendToBuffer(String buffer, String string) {
+    var int i, length;
+    let i = 0;
+    let length = string.length();
+    while (i < length) {
+      do buffer.appendChar(string.charAt(i));
+      let i = i + 1;
+    }
+    return;
+  }
+
+  /**
+   * @return A string consisting of a substring repeated `amount` times.
+   */
+  function String repeat(String string, int amount) {
+    var int i;
+    var Array strings;
+    var String ret;
+
+    // Handle case of repeating 0 or fewer times.
+    if (~(amount > 0)) {
+      return "";
+    }
+
+    let strings = Array.new(amount);
+    let i = 0;
+    while (i < amount) {
+      let strings[i] = string;
+      let i = i + 1;
+    }
+
+    let ret = Strings.join(strings, amount, "");
+    do strings.dispose();
+    return ret;
+  }
+
+
+  /**
+   * Concatenates an array of strings into a single string, joined by a
+   * substring.
+   *
+   * @return A single joined string.
+   */
+  function String join(Array strings, int stringsLength, String glue) {
+    var String ret, string;
+    var int retLength, i;
+
+    // Create a string buffer.
+    let retLength = 0;
+    let i = 0;
+    while (i < stringsLength) {
+      let string = strings[i];
+      let retLength = retLength + string.length();
+      let i = i + 1;
+    }
+    let retLength = retLength + ((stringsLength - 1) * glue.length());
+    let ret = String.new(retLength);
+
+    // For each string, append their chars to the buffer.
+    let i = 0;
+    while (i < stringsLength) {
+      if (~(i = 0)) {
+        do Strings.appendToBuffer(ret, glue);
+      }
+      let string = strings[i];
+      do Strings.appendToBuffer(ret, string);
+      let i = i + 1;
+    }
+
+    return ret;
+  }
+
+  /**
+   * Concatcenates 2 strings together.
+   */
+  function String concat(String a, String b) {
+    var int stringsLength;
+    var Array strings;
+    var String ret;
+
+    let stringsLength = 2;
+    let strings = Array.new(stringsLength);
+    let strings[0] = a;
+    let strings[1] = b;
+
+    let ret = Strings.join(strings, stringsLength, "");
+    do strings.dispose();
+    return ret;
+  }
+
+  /**
+   * Gets the string representation of an int.
+   */
+  function String coerceInt(int integer) {
+    var int temp, length;
+    var String buffer;
+
+    // Determine the width of the number.
+    let length = 1;
+    let temp = Math.abs(integer);
+    while ((temp / 10) > 0) {
+      let length = length + 1;
+      let temp = temp / 10;
+    }
+
+    // Negative numbers need space for a negative sign.
+    if (integer < 0) {
+      let length = length + 1;
+    }
+
+    let buffer = String.new(length);
+    do buffer.setInt(integer);
+
+    return buffer;
+  }
+
+  /**
+   * Gets the string representation of a char.
+   */
+  function String coerceChar(char character) {
+    var String buffer;
+
+    let buffer = String.new(1);
+    do buffer.appendChar(character);
+
+    return buffer;
+  }
+
+  /**
+   * Gets the string representation of a boolean.
+   */
+  function String coerceBoolean(boolean bool) {
+    if (bool) {
+      return "true";
+    } else {
+      return "false";
+    }
+  }
+
+}

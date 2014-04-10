@@ -28,8 +28,8 @@ class Tests {
     // do UnitTest.assertIntegerEquals("should be 2", 2, SomeClass.getTwo());
     // do UnitTest.assertStringEquals("should be 'abc'", "abc", SomeClass.getAlphabet(3));
 
-    // Feel free to remove the following line. It runs tests for the framework itself.
-    do UnitTestTests.runTests();
+    // Feel free to remove the following lines.
+    do StringsTests.runTests();
 
     return;
   }
