@@ -59,7 +59,7 @@ class UnitTest {
    * Example usage:
    *
    * ```
-   * UnitTest.assertIntegerEquals(
+   * UnitTest.assertIntEquals(
    *   "Ensure that 2 is the min of {2, 3}.", 2, Math.min(2, 3)
    * );
    * ```
