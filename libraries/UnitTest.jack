@@ -11,6 +11,7 @@ class UnitTest {
    */
   function void fail(String description, String reason, String expectedMessage,
                      String expected, String resultMessage, String result) {
+    var Array args;
 
     // Optional parameter.
     if (expectedMessage = null) {
@@ -24,28 +25,27 @@ class UnitTest {
 
     do Output.moveCursor(0, 0);
 
-    do Output.printString("Tests failed!");
-    do Output.println();
+    do Out.println("Tests failed!");
 
-    do Output.printString("Description: ");
-    do Output.printChar(String.doubleQuote());
-    do Output.printString(description);
-    do Output.printChar(String.doubleQuote());
-    do Output.println();
+    let args = Array.new(3);
 
-    do Output.printString("Reason: ");
-    do Output.printString(reason);
-    do Output.println();
+    let args[0] = String.doubleQuote();
+    let args[1] = description;
+    let args[2] = String.doubleQuote();
+    do Out.printfln("Description: %c%s%c", args);
 
-    do Output.printString(expectedMessage);
-    do Output.printString(": ");
-    do Output.printString(expected);
-    do Output.println();
+    let args[0] = reason;
+    do Out.printfln("Reason: %s", args);
 
-    do Output.printString(resultMessage);
-    do Output.printString(": ");
-    do Output.printString(result);
-    do Output.println();
+    let args[0] = expectedMessage;
+    let args[1] = expected;
+    do Out.printfln("%s: %s", args);
+
+    let args[0] = resultMessage;
+    let args[1] = result;
+    do Out.printfln("%s: %s", args);
+
+    do args.dispose();
 
     do Sys.halt();
 
