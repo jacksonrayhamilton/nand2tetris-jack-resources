@@ -68,7 +68,7 @@ class UnitTest {
    * @param expected The expected (correct) outcome of the method/function.
    * @param result The return value of the method/function goes here.
    */
-  function void assertIntegerEquals(String description, int expected, int result) {
+  function void assertIntEquals(String description, int expected, int result) {
     if (~(expected = result)) {
       do UnitTest.fail(description,
                        "Incorrect int value.",
