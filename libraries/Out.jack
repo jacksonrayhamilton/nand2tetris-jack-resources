@@ -1,5 +1,7 @@
 /**
  * Utility methods for outputting strings to the screen.
+ *
+ * @author Jackson Ray Hamilton
  */
 class Out {
 
