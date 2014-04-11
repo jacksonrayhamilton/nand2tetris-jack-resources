@@ -71,9 +71,22 @@ class UnitTest {
   function void assertIntegerEquals(String description, int expected, int result) {
     if (~(expected = result)) {
       do UnitTest.fail(description,
-                       "Incorrect integer value.",
+                       "Incorrect int value.",
                        null, Strings.coerceInt(expected),
                        null, Strings.coerceInt(result));
+    }
+    return;
+  }
+
+  /**
+   * Fails if a char is incorrect.
+   */
+  function void assertCharEquals(String description, char expected, char result) {
+    if (~(expected = result)) {
+      do UnitTest.fail(description,
+                       "Incorrect char value.",
+                       null, Strings.coerceChar(expected),
+                       null, Strings.coerceChar(result));
     }
     return;
   }
