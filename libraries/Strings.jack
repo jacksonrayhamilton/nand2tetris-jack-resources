@@ -283,6 +283,11 @@ class Strings {
       }
     }
 
+    // Handle case of having redundantly called this method.
+    if (tagCount = 0) {
+      return format;
+    }
+
     let substringsLength = 1 + (tagCount * 2);
     let substrings = Array.new(substringsLength);
 
