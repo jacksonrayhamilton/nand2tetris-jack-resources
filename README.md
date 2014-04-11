@@ -16,6 +16,10 @@ Features
     - `coerceInt()`, `coerceChar()`, `coerceBoolean()`, `parseChar()`
     - `substring()`, `indexOf()`
     - `sprintf()`
+- Output sugar library named "Out".
+    - Java-like `println()`
+    - C-like `printf()`
+    - `printfln()`
 - Text-editor language support.
     - Emacs
         - Syntax highlighting including OS classes.
