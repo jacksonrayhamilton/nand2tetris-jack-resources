@@ -20,7 +20,7 @@
 (defvar jack-tab-width 2 "Width of a tab for Jack mode.")
 
 (defvar jack-tools-directory
-  "~/architecture/nand2tetris/tools/"
+  "/home/jackson/architecture/nand2tetris/tools/"
   "Your nand2tetris tools folder.")
 
 (defvar jack-build-directory
