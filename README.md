@@ -12,9 +12,10 @@ Features
 - String utility library aptly-dubbed "Strings".
     - `equals()`
     - `repeat()`
-    - `join()`, `concat()`
+    - `join()`, `concat()`, `split()`
     - `coerceInt()`, `coerceChar()`, `coerceBoolean()`, `parseChar()`
     - `substring()`, `indexOf()`
+    - `count()`
     - `sprintf()`
 - Output sugar library named "Out".
     - Java-like `println()`
