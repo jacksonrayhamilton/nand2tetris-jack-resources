@@ -20,7 +20,10 @@ class Out {
    * See `Strings.sprintf()`.
    */
   function void printf(String format, Array values) {
-    do Output.printString(Strings.sprintf(format, values));
+    var String formattedString;
+    let formattedString = Strings.sprintf(format, values);
+    do Output.printString(formattedString);
+    do formattedString.dispose();
     return;
   }
 

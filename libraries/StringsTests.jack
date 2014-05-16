@@ -18,6 +18,16 @@ class StringsTests {
     return;
   }
 
+  function void clone_VariousLengths_Cloned() {
+    do UnitTest.assertStringEquals("cloned", "",
+                                   Strings.clone(""));
+    do UnitTest.assertStringEquals("cloned", "a",
+                                   Strings.clone("a"));
+    do UnitTest.assertStringEquals("cloned", "ab",
+                                   Strings.clone("ab"));
+    return;
+  }
+
   function void coerceInt_DifferingSizes_CorrectStringSize() {
     do UnitTest.assertStringEquals("coerce int to string", "0",
                                    Strings.coerceInt(0));
@@ -304,6 +314,7 @@ class StringsTests {
   function void runTests() {
     do StringsTests.equals_SameString_True();
     do StringsTests.equals_DifferentStrings_False();
+    do StringsTests.clone_VariousLengths_Cloned();
     do StringsTests.coerceInt_DifferingSizes_CorrectStringSize();
     do StringsTests.coerceChar_DifferentChars_CorrectRepresentation();
     do StringsTests.concat_DifferingLengths_CorrectlyConcatenated();

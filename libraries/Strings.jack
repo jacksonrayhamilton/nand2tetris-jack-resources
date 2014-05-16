@@ -47,12 +47,43 @@ class Strings {
   }
 
   /**
+   * Duplicates a string as a new object.
+   *
+   * @param toClone String to clone.
+   * @return Duplicate string of the argument string.
+   */
+  function String clone(String toClone) {
+    var String ret;
+
+    let ret = String.new(toClone.length());
+    do Strings.appendToBuffer(ret, toClone);
+
+    return ret;
+  }
+
+  /**
+   * Disposes all the strings in an array along with the array itself.
+   */
+  function void disposeStringArray(Array array, int length) {
+    var int i;
+    var String string;
+    let i = 0;
+    while (i < length) {
+      let string = array[i];
+      do string.dispose();
+      let i = i + 1;
+    }
+    do array.dispose();
+    return;
+  }
+
+  /**
    * @return A string consisting of a substring repeated `amount` times.
    */
   function String repeat(String string, int amount) {
     var int i;
     var Array strings;
-    var String ret;
+    var String glue, ret;
 
     // Handle case of repeating 0 or fewer times.
     if (~(amount > 0)) {
@@ -66,8 +97,12 @@ class Strings {
       let i = i + 1;
     }
 
-    let ret = Strings.join(strings, amount, "");
+    let glue = "";
+    let ret = Strings.join(strings, amount, glue);
+
     do strings.dispose();
+    do glue.dispose();
+
     return ret;
   }
 
@@ -108,24 +143,30 @@ class Strings {
 
   /**
    * Concatcenates 2 strings together.
+   *
+   * @return The concatcenation of `a` and `b`.
    */
   function String concat(String a, String b) {
     var int stringsLength;
     var Array strings;
-    var String ret;
+    var String glue, ret;
 
     let stringsLength = 2;
     let strings = Array.new(stringsLength);
     let strings[0] = a;
     let strings[1] = b;
 
-    let ret = Strings.join(strings, stringsLength, "");
+    let glue = "";
+    let ret = Strings.join(strings, stringsLength, glue);
+
     do strings.dispose();
+    do glue.dispose();
+
     return ret;
   }
 
   /**
-   * Gets the string representation of an int.
+   * @return The string representation of an int.
    */
   function String coerceInt(int integer) {
     var int temp, length;
@@ -151,7 +192,7 @@ class Strings {
   }
 
   /**
-   * Gets the string representation of a char.
+   * @return The string representation of a char.
    */
   function String coerceChar(char character) {
     var String buffer;
@@ -163,7 +204,7 @@ class Strings {
   }
 
   /**
-   * Gets the string representation of a boolean.
+   * @return The string representation of a boolean.
    */
   function String coerceBoolean(boolean bool) {
     if (bool) {
@@ -246,7 +287,8 @@ class Strings {
   }
 
   /**
-   * Gets the first char from a string.
+   * @param string String to parse.
+   * @return The first char of a string.
    */
   function char parseChar(String string) {
     return string.charAt(0);
@@ -267,7 +309,9 @@ class Strings {
     var int index, beginIndex, tagCount, substringsLength, i, substringsIndex;
     var Array substrings;
     var char specifier;
-    var String ret;
+    var String percentSign, glue, ret;
+
+    let percentSign = "%";
 
     let index = 0;
     let beginIndex = index;
@@ -276,7 +320,7 @@ class Strings {
     // can be made.
     let tagCount = 0;
     while (~(index = -1)) {
-      let index = Strings.indexOf(format, "%", beginIndex);
+      let index = Strings.indexOf(format, percentSign, beginIndex);
       if (index > -1) {
         let tagCount = tagCount + 1;
         let beginIndex = index + 2;
@@ -297,7 +341,7 @@ class Strings {
     let beginIndex = index;
 
     while (~(index = -1)) {
-      let index = Strings.indexOf(format, "%", beginIndex);
+      let index = Strings.indexOf(format, percentSign, beginIndex);
       if (index > -1) {
         // Get the substring before the tag.
         let substrings[substringsIndex] = Strings.substring(format, beginIndex,
@@ -314,7 +358,8 @@ class Strings {
           let substrings[substringsIndex] = Strings.coerceInt(values[i]);
         } else {
           if (specifier = 115) { // s
-            let substrings[substringsIndex] = values[i];
+            // TODO: Find alternative to cloning.
+            let substrings[substringsIndex] = Strings.clone(values[i]);
           } else {
             if (specifier = 99) { // c
               let substrings[substringsIndex] = Strings.coerceChar(values[i]);
@@ -330,8 +375,12 @@ class Strings {
     }
 
     // Finally join all the formatted bits together.
-    let ret = Strings.join(substrings, substringsLength, "");
-    do substrings.dispose();
+    let glue = "";
+    let ret = Strings.join(substrings, substringsLength, glue);
+
+    do percentSign.dispose();
+    do Strings.disposeStringArray(substrings, substringsLength);
+    do glue.dispose();
 
     return ret;
   }
