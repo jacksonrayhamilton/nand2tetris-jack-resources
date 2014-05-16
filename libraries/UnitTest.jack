@@ -133,8 +133,8 @@ class UnitTest {
     }
 
     let args = Array.new(2);
-    let args[0] = expected;
-    let args[1] = result;
+    let args[0] = result;
+    let args[1] = expected;
     do UnitTest.fail(description,
                      Strings.sprintf(
                        "Length of result string `%s' unequal to length of expected string `%s'.",
