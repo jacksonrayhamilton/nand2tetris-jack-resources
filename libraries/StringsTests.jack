@@ -138,10 +138,20 @@ class StringsTests {
   }
 
   function void indexOf_DifferingSubstringSizes_CorrectIndex() {
+    var String emptyString;
     var String testString;
 
+    let emptyString = "";
     let testString = "abcdefg";
 
+    do UnitTest.assertIntEquals("indexOf", 0,
+                                    Strings.indexOf(emptyString, "", 0));
+    do UnitTest.assertIntEquals("indexOf", -1,
+                                    Strings.indexOf(emptyString, "", 1));
+    do UnitTest.assertIntEquals("indexOf", 0,
+                                    Strings.indexOf(testString, "", 0));
+    do UnitTest.assertIntEquals("indexOf", 1,
+                                    Strings.indexOf(testString, "", 1));
     do UnitTest.assertIntEquals("indexOf", 0,
                                     Strings.indexOf(testString, "a", 0));
     do UnitTest.assertIntEquals("indexOf", 1,
@@ -154,6 +164,60 @@ class StringsTests {
                                     Strings.indexOf(testString, "hijkl", 0));
     do UnitTest.assertIntEquals("indexOf not found", -1,
                                     Strings.indexOf(testString, "a", 1));
+
+    return;
+  }
+
+  function void count_CountEmptyStrings_CorrectCounts() {
+    do UnitTest.assertIntEquals("empty string in empty string", 1, Strings.count("", ""));
+    do UnitTest.assertIntEquals("empty strings in string", 2, Strings.count(" ", ""));
+    return;
+  }
+
+  function void count_VaryingCounts_CorrectCounts() {
+    do UnitTest.assertIntEquals("count 0 d", 0, Strings.count("abc", "d"));
+    do UnitTest.assertIntEquals("count 1 a", 1, Strings.count("abc", "a"));
+    do UnitTest.assertIntEquals("count 1 b", 1, Strings.count("abc", "b"));
+    do UnitTest.assertIntEquals("count 1 c", 1, Strings.count("abc", "c"));
+    do UnitTest.assertIntEquals("count 1 ab", 1, Strings.count("abc", "ab"));
+    do UnitTest.assertIntEquals("count 1 bc", 1, Strings.count("abc", "bc"));
+    do UnitTest.assertIntEquals("count 1 abc", 1, Strings.count("abc", "abc"));
+    do UnitTest.assertIntEquals("count 2 a", 2, Strings.count("abcabc", "a"));
+    do UnitTest.assertIntEquals("count 2 b", 2, Strings.count("abcabc", "b"));
+    do UnitTest.assertIntEquals("count 2 c", 2, Strings.count("abcabc", "c"));
+    do UnitTest.assertIntEquals("count 2 ab", 2, Strings.count("abcabc", "ab"));
+    do UnitTest.assertIntEquals("count 1 ca", 1, Strings.count("abcabc", "ca"));
+    do UnitTest.assertIntEquals("count 2 bc", 2, Strings.count("abcabc", "bc"));
+    do UnitTest.assertIntEquals("count 2 abc", 2, Strings.count("abcabc", "abc"));
+    do UnitTest.assertIntEquals("count 0 abcd", 0, Strings.count("abcabc", "abcd"));
+    return;
+  }
+
+  function void split_VaryingDelimiterCounts_CorrectlySplit() {
+    var Array result;
+
+    let result = Strings.split("ape", "");
+    do UnitTest.assertStringEquals("substring 0", "a", result[0]);
+    do UnitTest.assertStringEquals("substring 1", "p", result[1]);
+    do UnitTest.assertStringEquals("substring 2", "e", result[2]);
+
+    let result = Strings.split("ape", ", ");
+    do UnitTest.assertStringEquals("only substring", "ape", result[0]);
+
+    let result = Strings.split("ape, baboon", ", ");
+    do UnitTest.assertStringEquals("substring 0", "ape", result[0]);
+    do UnitTest.assertStringEquals("substring 1", "baboon", result[1]);
+
+    let result = Strings.split("ape, baboon, chimp", ", ");
+    do UnitTest.assertStringEquals("substring 0", "ape", result[0]);
+    do UnitTest.assertStringEquals("substring 1", "baboon", result[1]);
+    do UnitTest.assertStringEquals("substring 2", "chimp", result[2]);
+
+    let result = Strings.split("ape, baboon, chimp, ", ", ");
+    do UnitTest.assertStringEquals("substring 0", "ape", result[0]);
+    do UnitTest.assertStringEquals("substring 1", "baboon", result[1]);
+    do UnitTest.assertStringEquals("substring 2", "chimp", result[2]);
+    do UnitTest.assertStringEquals("substring 3", "", result[3]);
 
     return;
   }
@@ -321,6 +385,9 @@ class StringsTests {
     do StringsTests.join_VariousLengths_CorrectlyJoined();
     do StringsTests.substring_DifferingRanges_CorrectSubstring();
     do StringsTests.indexOf_DifferingSubstringSizes_CorrectIndex();
+    do StringsTests.count_CountEmptyStrings_CorrectCounts();
+    do StringsTests.count_VaryingCounts_CorrectCounts();
+    do StringsTests.split_VaryingDelimiterCounts_CorrectlySplit();
     do StringsTests.sprintf_NoTags_SameString();
     do StringsTests.sprintf_DifferentIndices_CorrectInterpolation();
     do StringsTests.sprintf_NumerousTypes_CorrectInterpolation();

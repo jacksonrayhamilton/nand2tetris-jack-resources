@@ -272,6 +272,12 @@ class Strings {
     let index = beginIndex;
     let stringLength = string.length();
     let substringLength = substring.length();
+
+    // Case of empty string. It is immediately found.
+    if ((substringLength = 0) & ~(beginIndex > stringLength)) {
+      return index;
+    }
+
     while (index < stringLength) {
       let endIndex = index + substringLength;
       let toCheck = Strings.substring(string, index, endIndex);
@@ -284,6 +290,70 @@ class Strings {
     }
 
     return -1;
+  }
+
+  /**
+   * @return Number of occurrences of `substring` in `string`.
+   */
+  function int count(String string, String substring) {
+    var int substringLength;
+    var int count;
+    var int index;
+    var int nextIndex;
+
+    let substringLength = substring.length();
+    let count = 0;
+    let index = 0;
+    while (index > -1) {
+      let nextIndex = Strings.indexOf(string, substring, index);
+      if (nextIndex > -1) {
+        let count = count + 1;
+        // Guarantee that the index advances.
+        let nextIndex = Math.max(nextIndex + substringLength,
+                                 index + 1);
+      }
+      let index = nextIndex;
+    }
+
+    return count;
+  }
+
+  /**
+   * Splits a string into an array of substrings where each substring is before
+   * or after (and not including) a delimiter substring.
+   *
+   * @param string String to split.
+   * @param delimiter Substring at which to split `string`.
+   * @return Array of strings.
+   */
+  function Array split(String string, String delimiter) {
+    var int index;
+    var int occurrences;
+    var int delimiterLength;
+    var int retLength;
+    var Array ret;
+    var int i;
+    var int nextIndex;
+
+    let occurrences = Strings.count(string, delimiter);
+
+    let delimiterLength = delimiter.length();
+    let retLength = occurrences + 1;
+    let ret = Array.new(retLength);
+    let index = 0;
+    let i = 0;
+    while (i < occurrences) {
+      // Guarantee that the index advances.
+      let nextIndex = Math.max(Strings.indexOf(string, delimiter, index),
+                               index + 1);
+      let ret[i] = Strings.substring(string, index, nextIndex);
+      let index = nextIndex + delimiterLength;
+      let i = i + 1;
+    }
+    // Add the last substring.
+    let ret[i] = Strings.substring(string, index, string.length());
+
+    return ret;
   }
 
   /**
